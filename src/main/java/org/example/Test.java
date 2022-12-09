@@ -15,6 +15,7 @@ public class Test {
         var funpack = readFunpacked();
 
         // Test values
+        System.out.println("Fpack and funpacked");
         System.out.println(Arrays.deepEquals(fpack, funpack));
 
         System.out.println("A corner:");
@@ -24,7 +25,11 @@ public class Test {
         //getCompressedHeader().dumpHeader(System.out);
 
         System.out.println(Arrays.deepEquals(attemptRescale(fpack, 1, 1), funpack));
+        System.out.println();
 
+        System.out.println("Gzipped and original");//ZDITHER0=                 2068
+        System.out.println(Arrays.deepEquals(fpack, funpack));
+        System.out.println(Arrays.deepEquals(attemptRescale(fpack, 1, 1), funpack));
         System.out.println();
     }
 
@@ -42,6 +47,16 @@ public class Test {
 
     private static float[][] readCompressed() {
         try (Fits f = new Fits("fpack.fits.fz")) {
+            var hdu = ((CompressedImageHDU) f.read()[1]).asImageHDU();
+            float[][] image = (float[][]) hdu.getKernel();
+            return image;
+        } catch (IOException | FitsException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static float[][] readCompressedGzip() {
+        try (Fits f = new Fits("gzip.fits.fz")) {
             var hdu = ((CompressedImageHDU) f.read()[1]).asImageHDU();
             float[][] image = (float[][]) hdu.getKernel();
             return image;
