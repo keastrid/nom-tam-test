@@ -11,25 +11,34 @@ import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {
-        var fpack = readCompressed();
-        var funpack = readFunpacked();
+        var fpack = readCompressed("fpack.fits.fz");
+        var funpack = readFunpacked("funpack.fits");
+        var gzip = readCompressed("gzip.fits.fz");
+        var unpackedGzip = readFunpacked("funpack.fits");
+        var gzipNoDither = readCompressed("noDither.fits.fz");
+        var unpackedNoDither = readFunpacked("noDither.fits");
 
         // Test values
         System.out.println("Fpack and funpacked");
         System.out.println(Arrays.deepEquals(fpack, funpack));
 
-        System.out.println("A corner:");
+        /*System.out.println("A corner:");
         System.out.println(fpack[0][0]);
-        System.out.println(funpack[0][0]);
+        System.out.println(funpack[0][0]);*/
 
         //getCompressedHeader().dumpHeader(System.out);
 
         System.out.println(Arrays.deepEquals(attemptRescale(fpack, 1, 1), funpack));
         System.out.println();
 
-        System.out.println("Gzipped and original");//ZDITHER0=                 2068
-        System.out.println(Arrays.deepEquals(fpack, funpack));
-        System.out.println(Arrays.deepEquals(attemptRescale(fpack, 1, 1), funpack));
+        System.out.println("Gzipped and unpacked");//ZDITHER0=                 2068
+        System.out.println(Arrays.deepEquals(gzip, unpackedGzip));
+        System.out.println(Arrays.deepEquals(attemptRescale(fpack, 1, 1), unpackedGzip));
+        System.out.println();
+
+        System.out.println("Gzipped no quantization and unpacked");
+        System.out.println(Arrays.deepEquals(gzipNoDither, unpackedNoDither));
+        System.out.println(Arrays.deepEquals(attemptRescale(fpack, 1, 1), unpackedNoDither));
         System.out.println();
     }
 
@@ -45,18 +54,8 @@ public class Test {
         return data;
     }
 
-    private static float[][] readCompressed() {
-        try (Fits f = new Fits("fpack.fits.fz")) {
-            var hdu = ((CompressedImageHDU) f.read()[1]).asImageHDU();
-            float[][] image = (float[][]) hdu.getKernel();
-            return image;
-        } catch (IOException | FitsException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static float[][] readCompressedGzip() {
-        try (Fits f = new Fits("gzip.fits.fz")) {
+    private static float[][] readCompressed(String name) {
+        try (Fits f = new Fits(name)) {
             var hdu = ((CompressedImageHDU) f.read()[1]).asImageHDU();
             float[][] image = (float[][]) hdu.getKernel();
             return image;
@@ -73,8 +72,8 @@ public class Test {
         }
     }
 
-    private static float[][] readFunpacked() {
-        try (Fits f = new Fits("funpack.fits")) {
+    private static float[][] readFunpacked(String name) {
+        try (Fits f = new Fits(name)) {
             var hdu = ((ImageHDU) f.getHDU(0));
             float[][] image = (float[][]) hdu.getKernel();
             return image;
