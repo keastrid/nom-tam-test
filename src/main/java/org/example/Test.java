@@ -11,8 +11,8 @@ import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {
-        var fpack = readCompressed("original.fits.fz");
-        var funpack = readFunpacked("funpack.fits");
+        var fpack = readCompressed("fpack.fits.fz");
+        var funpack = readFunpacked("funpack2.fits");
 
         System.out.println(Arrays.deepToString(fpack));
         System.out.println(Arrays.deepToString(funpack));
