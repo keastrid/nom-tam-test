@@ -6,6 +6,7 @@ group 'org.example'
 version '1.0-SNAPSHOT'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -13,7 +14,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
-    implementation 'gov.nasa.gsfc.heasarc:nom-tam-fits:1.17.+'
+    implementation 'gov.nasa.gsfc.heasarc:nom-tam-fits:1.18.1-SNAPSHOT'
 }
 
 test {

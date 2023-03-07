@@ -11,35 +11,12 @@ import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {
-        var fpack = readCompressed("fpack.fits.fz");
+        var fpack = readCompressed("original.fits.fz");
         var funpack = readFunpacked("funpack.fits");
-        var gzip = readCompressed("gzip.fits.fz");
-        var unpackedGzip = readFunpacked("funpack.fits");
-        var gzipNoDither = readCompressed("noDither.fits.fz");
-        var unpackedNoDither = readFunpacked("noDither.fits");
 
         // Test values
         System.out.println("Fpack and funpacked");
         System.out.println(Arrays.deepEquals(fpack, funpack));
-
-        /*System.out.println("A corner:");
-        System.out.println(fpack[0][0]);
-        System.out.println(funpack[0][0]);*/
-
-        //getCompressedHeader().dumpHeader(System.out);
-
-        System.out.println(Arrays.deepEquals(attemptRescale(fpack, 1, 1), funpack));
-        System.out.println();
-
-        System.out.println("Gzipped and unpacked");//ZDITHER0=                 2068
-        System.out.println(Arrays.deepEquals(gzip, unpackedGzip));
-        System.out.println(Arrays.deepEquals(attemptRescale(fpack, 1, 1), unpackedGzip));
-        System.out.println();
-
-        System.out.println("Gzipped no quantization and unpacked");
-        System.out.println(Arrays.deepEquals(gzipNoDither, unpackedNoDither));
-        System.out.println(Arrays.deepEquals(attemptRescale(fpack, 1, 1), unpackedNoDither));
-        System.out.println();
     }
 
     private static float[][] attemptRescale(float[][] initPixels, double zZero, double zScale) {
