@@ -14,6 +14,9 @@ public class Test {
         var fpack = readCompressed("original.fits.fz");
         var funpack = readFunpacked("funpack.fits");
 
+        System.out.println(Arrays.deepToString(fpack));
+        System.out.println(Arrays.deepToString(funpack));
+
         // Test values
         System.out.println("Fpack and funpacked");
         System.out.println(Arrays.deepEquals(fpack, funpack));
